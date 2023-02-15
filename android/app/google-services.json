@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1079630427062",
+    "project_id": "medicine-app-dcfba",
+    "storage_bucket": "medicine-app-dcfba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079630427062:android:b6081cbb0189455434c717",
+        "android_client_info": {
+          "package_name": "com.account"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079630427062-a3vgg030s2f1nsf0encuo7vt5os618eg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMInBdDDg8ERUxR9lKZFzrWs4mIE-jCy4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079630427062-a3vgg030s2f1nsf0encuo7vt5os618eg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
