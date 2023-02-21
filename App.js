@@ -16,17 +16,10 @@ const App = () => {
         flex: 1,
       }}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
           <Stack.Screen
             options={{
-              title: 'My home',
-              headerStyle: {
-                backgroundColor: '#f4511e',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
+              headerShown: false,
             }}
             name="Login"
             component={LoginScreen}

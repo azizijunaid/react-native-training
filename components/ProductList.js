@@ -1,40 +1,46 @@
 import React from 'react';
 import {PRODUCTS} from '../Utils/constants';
-import CustomHeader from './CustomHeader';
-import {View, StyleSheet, FlatList, Text, Alert, Image} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  Alert,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 
 const getOnPressItem = () => Alert.alert('alert');
 
 const GridView = ({data, navigation}) => (
-  <View style={styleSheet.gridbox} onPress={navigation.navigate('ProductList')}>
-    <Image
-      resizeMode="contain"
-      source={{
-        uri: data.uri,
-      }}
-      style={{width: '50%', aspectRatio: 1 / 1, borderRadius: 50}}
-    />
-    <Text
-      style={styleSheet.gridText}
-      onPress={() => {
-        getOnPressItem(data);
-      }}>
-      {data.title}
-    </Text>
-    <Text
-      style={{fontSize: 14}}
-      onPress={() => {
-        getOnPressItem(data);
-      }}>
-      {data.price}
-    </Text>
+  <View style={styleSheet.gridbox}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('ProductDetails', {productDetails: data})
+      }>
+      <Image
+        resizeMode="contain"
+        source={{
+          uri: data.uri,
+        }}
+        style={{width: '50%', aspectRatio: 1 / 1, borderRadius: 50}}
+      />
+      <Text style={styleSheet.gridText}>{data.title}</Text>
+      <Text style={{fontSize: 14}}>{data.price}</Text>
+    </TouchableOpacity>
   </View>
 );
 
 export default function ProductList({navigation}) {
   return (
-    <>
-      {/* <CustomHeader title="Product List" /> */}
+    <LinearGradient
+      colors={['white', '#dab3ff']}
+      style={{
+        flex: 1,
+        paddingLeft: 15,
+        paddingRight: 15,
+      }}>
       <FlatList
         data={PRODUCTS}
         renderItem={({item}) => (
@@ -44,7 +50,7 @@ export default function ProductList({navigation}) {
         numColumns={2}
         key={item => item.id}
       />
-    </>
+    </LinearGradient>
   );
 }
 
@@ -79,5 +85,7 @@ const styleSheet = StyleSheet.create({
     fontSize: 18,
     fontWeight: 500,
     color: 'black',
+    display: 'flex',
+    justifyContent: 'center',
   },
 });
