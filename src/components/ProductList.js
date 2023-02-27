@@ -1,5 +1,5 @@
 import React from 'react';
-import {PRODUCTS} from '../Utils/constants';
+import {PRODUCTS} from '../utils/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   View,

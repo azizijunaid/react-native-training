@@ -112,3 +112,11 @@ export const PRODUCTS = [
       'orem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
   },
 ];
+
+export const Colors = {
+  primary100: '#f9beda',
+  primary500: '#1e1931',
+  primary800: '#610440',
+  error100: '#fcdcbf',
+  error500: '#f37c13',
+};

@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useContext, useState} from 'react';
 import {
   Text,
   View,
@@ -6,12 +7,35 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import auth from '@react-native-firebase/auth';
+import {AuthContext} from '../store/auth-context';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const authCtx = useContext(AuthContext);
+
+  const loginHandler = async () => {
+    try {
+      const signedInUser = await auth().signInWithEmailAndPassword(
+        email,
+        password,
+      );
+      console.log('signedInUser1');
+      authCtx.authenticate({isAuthenticated: true});
+      Alert.alert('Message', 'User loggedin successfully');
+      console.log('signedInUser', signedInUser);
+      navigation.navigate('ProductList');
+    } catch (error) {
+      console.log('error', error);
+      Alert.alert('Error', error?.messsage);
+    }
+  };
+
   return (
     <LinearGradient
       colors={['white', '#dab3ff']}
@@ -35,10 +59,11 @@ const LoginScreen = ({navigation}) => {
             style={styles.input}
             onChangeText={setPassword}
             value={password}
+            secureTextEntry={true}
             placeholder="Password"
           />
 
-          <TouchableOpacity style={styles.signInBtn}>
+          <TouchableOpacity style={styles.signInBtn} onPress={loginHandler}>
             <Text
               style={{
                 ...styles.signInFontSize,
@@ -97,7 +122,7 @@ const LoginScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{marginTop: '0%'}}>
+          {/* <TouchableOpacity style={{marginTop: '0%'}}>
             <Text
               style={{
                 ...styles.signInFontSize,
@@ -108,7 +133,7 @@ const LoginScreen = ({navigation}) => {
               onPress={() => navigation.navigate('ProductList')}>
               Product List
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </LinearGradient>

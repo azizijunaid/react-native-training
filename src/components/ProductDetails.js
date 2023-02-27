@@ -1,20 +1,25 @@
 import React, {useState} from 'react';
-import {View, Text, Image, Button, TouchableOpacity} from 'react-native';
+import {View, Text, Image, Button, TouchableOpacity, Alert} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {SafeAreaView} from 'react-native-safe-area-context';
 export default function ProductDetails({navigation, route}) {
   const [counter, setCounter] = useState(0);
   const plus = () => {
-    // Counter state is incremented
     setCounter(counter + 1);
   };
   const minus = () => {
-    // Counter state is incremented
     if (counter <= 0) {
       return;
+    } else {
+      setCounter(counter - 1);
     }
   };
+
+  const navigateToCart = () => {
+    navigation.navigate('Cart');
+  };
+
   const {productDetails} = route.params;
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -88,7 +93,7 @@ export default function ProductDetails({navigation, route}) {
                 }}
               />
             </TouchableOpacity>
-            <Text style={{fontSize: 20}}>{counter}</Text>
+            <Text style={{fontSize: 20, color: '#23046a'}}>{counter}</Text>
             <TouchableOpacity onPress={plus}>
               <Icon
                 name="plus"
@@ -115,7 +120,11 @@ export default function ProductDetails({navigation, route}) {
                 <Button title="Buy Now" color="#23046a" />
               </TouchableOpacity>
               <TouchableOpacity style={{width: 130}}>
-                <Button title="Add to Cart" color="orange" />
+                <Button
+                  title="Add to Cart"
+                  color="orange"
+                  onPress={navigateToCart}
+                />
               </TouchableOpacity>
             </View>
           </View>
