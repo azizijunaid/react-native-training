@@ -19,13 +19,8 @@ const SignUp = () => {
   const navigation = useNavigation();
   const submitHandler = async () => {
     try {
-      const user = await auth().createUserWithEmailAndPassword(
-        email,
-        confirmPassword,
-      );
-
+      await auth().createUserWithEmailAndPassword(email, confirmPassword);
       Alert.alert('Message', 'User Created');
-      navigation.navigate('ProductList');
     } catch (error) {
       Alert.alert('Error', error.message);
     }
@@ -165,7 +160,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 24,
     color: 'purple',
-    fontWeight: 500,
+    fontWeight: '500',
   },
   signInBtn: {
     height: 50,

@@ -6,12 +6,11 @@ import {
   StyleSheet,
   FlatList,
   Text,
-  Alert,
   Image,
   TouchableOpacity,
 } from 'react-native';
 
-const getOnPressItem = () => Alert.alert('alert');
+// const getOnPressItem = () => Alert.alert('alert');
 
 const GridView = ({data, navigation}) => (
   <View style={styleSheet.gridbox}>
@@ -24,7 +23,7 @@ const GridView = ({data, navigation}) => (
         source={{
           uri: data.uri,
         }}
-        style={{width: '50%', aspectRatio: 1 / 1, borderRadius: 50}}
+        style={styleSheet.aspectRatio}
       />
       <Text style={styleSheet.gridText}>{data.title}</Text>
       <Text style={{fontSize: 14}}>{data.price}</Text>
@@ -36,11 +35,7 @@ export default function ProductList({navigation}) {
   return (
     <LinearGradient
       colors={['white', '#dab3ff']}
-      style={{
-        flex: 1,
-        paddingLeft: 15,
-        paddingRight: 15,
-      }}>
+      style={styleSheet.gradianStyle}>
       <FlatList
         data={PRODUCTS}
         renderItem={({item}) => (
@@ -58,6 +53,18 @@ const styleSheet = StyleSheet.create({
   MainContainer: {
     flex: 1,
     backgroundColor: 'white',
+  },
+
+  aspectRatio: {
+    width: '50%',
+    aspectRatio: 1 / 1,
+    borderRadius: 50,
+  },
+
+  gradianStyle: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
 
   gridbox: {
@@ -83,7 +90,7 @@ const styleSheet = StyleSheet.create({
 
   gridText: {
     fontSize: 18,
-    fontWeight: 500,
+    fontWeight: '500',
     color: 'black',
     display: 'flex',
     justifyContent: 'center',

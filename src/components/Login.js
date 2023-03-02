@@ -11,25 +11,20 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
-import {AuthContext} from '../store/auth-context';
+import {useDispatch} from 'react-redux';
+import {authenticate} from '../store/slices';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const authCtx = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   const loginHandler = async () => {
     try {
-      const signedInUser = await auth().signInWithEmailAndPassword(
-        email,
-        password,
-      );
-      console.log('signedInUser1');
-      authCtx.authenticate({isAuthenticated: true});
+      const user = await auth().signInWithEmailAndPassword(email, password);
+      dispatch(authenticate(user.uid));
       Alert.alert('Message', 'User loggedin successfully');
-      console.log('signedInUser', signedInUser);
-      navigation.navigate('ProductList');
     } catch (error) {
       console.log('error', error);
       Alert.alert('Error', error?.messsage);
@@ -167,7 +162,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 24,
     color: 'purple',
-    fontWeight: 500,
+    fontWeight: 'bold',
   },
   signInBtn: {
     height: 50,

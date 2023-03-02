@@ -5,23 +5,99 @@ import {
   Image,
   ScrollView,
   Button,
+  FlatList,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {PRODUCTS} from '../utils/constants';
 import LinearGradient from 'react-native-linear-gradient';
+import {useDispatch, useSelector} from 'react-redux';
+import {updateItemQuantity} from '../store/cartSlice';
 
 export default function Cart() {
-  const [counter, setCounter] = useState(0);
-  const plus = () => {
-    setCounter(counter + 1);
+  const {cartItems} = useSelector(state => state.cart);
+  const dispatch = useDispatch();
+
+  const handleUpdateItemQuantity = (item, newQuantity) => {
+    dispatch(updateItemQuantity({id: item.id, qty: newQuantity}));
   };
-  const minus = () => {
-    if (counter <= 0) {
-      return;
-    } else {
-      setCounter(counter - 1);
-    }
+
+  const total = () => {
+    return cartItems.reduce((acc, item) => acc + item.qty, 0);
+  };
+
+  const renderItems = ({item}) => {
+    return (
+      <View style={{flex: 4}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+          }}>
+          <Image
+            style={{
+              resizeMode: 'cover',
+              height: 100,
+              width: 100,
+            }}
+            source={{uri: item.uri}}
+          />
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              justifyContent: 'space-evenly',
+              marginLeft: 10,
+              fontWeight: 10,
+            }}>
+            <Text style={{color: '#23046a'}}>{item.title}</Text>
+            <Text style={{color: '#23046a'}}>{item.price}</Text>
+          </View>
+          <View
+            style={{
+              flex: 2,
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              verticalAlign: 'center',
+              marginTop: 30,
+            }}>
+            <TouchableOpacity
+              style={{borderRadius: 50}}
+              onPress={() => handleUpdateItemQuantity(item, item.qty - 1)}>
+              <Icon
+                name="minus"
+                size={15}
+                color="#900"
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 50,
+                  backgroundColor: '#23046a',
+                  padding: 9,
+                  color: 'white',
+                }}
+              />
+            </TouchableOpacity>
+            <Text style={{fontSize: 20, color: '#23046a'}}>{item.qty}</Text>
+            <TouchableOpacity
+              onPress={() => handleUpdateItemQuantity(item, item.qty + 1)}>
+              <Icon
+                name="plus"
+                size={15}
+                color="#900"
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 50,
+                  backgroundColor: '#23046a',
+                  padding: 9,
+                  color: 'white',
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
   };
   return (
     <LinearGradient
@@ -33,356 +109,19 @@ export default function Cart() {
       }}>
       <View style={{flex: 1}}>
         <ScrollView style={{flex: 1}}>
-          <View style={{flex: 4}}>
-            <View
-              style={{
-                //   flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              }}>
-              <Image
+          <FlatList
+            data={cartItems}
+            renderItem={renderItems}
+            ItemSeparatorComponent={() => (
+              <View
                 style={{
-                  resizeMode: 'cover',
-                  height: 100,
-                  width: 100,
+                  backgroundColor: '#23046a',
+                  height: 0.5,
+                  paddingTop: 2,
                 }}
-                source={{uri: PRODUCTS[0].uri}}
               />
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'column',
-                  justifyContent: 'space-evenly',
-                  marginLeft: 10,
-                  fontWeight: 10,
-                }}>
-                <Text style={{color: '#23046a'}}>{PRODUCTS[0].title}</Text>
-                <Text style={{color: '#23046a'}}>{PRODUCTS[0].price}</Text>
-              </View>
-              <View
-                style={{
-                  flex: 2,
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  verticalAlign: 'center',
-                  marginTop: 30,
-                  // backgroundColor: 'red',
-                  // marginRight: 30,
-                }}>
-                <TouchableOpacity style={{borderRadius: 50}} onPress={minus}>
-                  <Icon
-                    name="minus"
-                    size={15}
-                    color="#900"
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50,
-                      backgroundColor: '#23046a',
-                      padding: 9,
-                      color: 'white',
-                    }}
-                  />
-                </TouchableOpacity>
-                <Text style={{fontSize: 20, color: '#23046a'}}>{counter}</Text>
-                <TouchableOpacity onPress={plus}>
-                  <Icon
-                    name="plus"
-                    size={15}
-                    color="#900"
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50,
-                      backgroundColor: '#23046a',
-                      padding: 9,
-                      color: 'white',
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={{flex: 4}}>
-            <View
-              style={{
-                //   flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              }}>
-              <Image
-                style={{
-                  resizeMode: 'cover',
-                  height: 100,
-                  width: 100,
-                }}
-                source={{uri: PRODUCTS[0].uri}}
-              />
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'column',
-                  justifyContent: 'space-evenly',
-                  marginLeft: 10,
-                  fontWeight: 10,
-                }}>
-                <Text style={{color: '#23046a'}}>{PRODUCTS[0].title}</Text>
-                <Text style={{color: '#23046a'}}>{PRODUCTS[0].price}</Text>
-              </View>
-              <View
-                style={{
-                  flex: 2,
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  verticalAlign: 'center',
-                  marginTop: 30,
-                  // backgroundColor: 'red',
-                  // marginRight: 30,
-                }}>
-                <TouchableOpacity style={{borderRadius: 50}} onPress={minus}>
-                  <Icon
-                    name="minus"
-                    size={15}
-                    color="#900"
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50,
-                      backgroundColor: '#23046a',
-                      padding: 9,
-                      color: 'white',
-                    }}
-                  />
-                </TouchableOpacity>
-                <Text style={{fontSize: 20, color: '#23046a'}}>{counter}</Text>
-                <TouchableOpacity onPress={plus}>
-                  <Icon
-                    name="plus"
-                    size={15}
-                    color="#900"
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50,
-                      backgroundColor: '#23046a',
-                      padding: 9,
-                      color: 'white',
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={{flex: 4}}>
-            <View
-              style={{
-                //   flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              }}>
-              <Image
-                style={{
-                  resizeMode: 'cover',
-                  height: 100,
-                  width: 100,
-                }}
-                source={{uri: PRODUCTS[0].uri}}
-              />
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'column',
-                  justifyContent: 'space-evenly',
-                  marginLeft: 10,
-                  fontWeight: 10,
-                }}>
-                <Text style={{color: '#23046a'}}>{PRODUCTS[0].title}</Text>
-                <Text style={{color: '#23046a'}}>{PRODUCTS[0].price}</Text>
-              </View>
-              <View
-                style={{
-                  flex: 2,
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  verticalAlign: 'center',
-                  marginTop: 30,
-                  // backgroundColor: 'red',
-                  // marginRight: 30,
-                }}>
-                <TouchableOpacity style={{borderRadius: 50}} onPress={minus}>
-                  <Icon
-                    name="minus"
-                    size={15}
-                    color="#900"
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50,
-                      backgroundColor: '#23046a',
-                      padding: 9,
-                      color: 'white',
-                    }}
-                  />
-                </TouchableOpacity>
-                <Text style={{fontSize: 20, color: '#23046a'}}>{counter}</Text>
-                <TouchableOpacity onPress={plus}>
-                  <Icon
-                    name="plus"
-                    size={15}
-                    color="#900"
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50,
-                      backgroundColor: '#23046a',
-                      padding: 9,
-                      color: 'white',
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={{flex: 4}}>
-            <View
-              style={{
-                //   flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              }}>
-              <Image
-                style={{
-                  resizeMode: 'cover',
-                  height: 100,
-                  width: 100,
-                }}
-                source={{uri: PRODUCTS[0].uri}}
-              />
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'column',
-                  justifyContent: 'space-evenly',
-                  marginLeft: 10,
-                  fontWeight: 10,
-                }}>
-                <Text style={{color: '#23046a'}}>{PRODUCTS[0].title}</Text>
-                <Text style={{color: '#23046a'}}>{PRODUCTS[0].price}</Text>
-              </View>
-              <View
-                style={{
-                  flex: 2,
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  verticalAlign: 'center',
-                  marginTop: 30,
-                  // backgroundColor: 'red',
-                  // marginRight: 30,
-                }}>
-                <TouchableOpacity style={{borderRadius: 50}} onPress={minus}>
-                  <Icon
-                    name="minus"
-                    size={15}
-                    color="#900"
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50,
-                      backgroundColor: '#23046a',
-                      padding: 9,
-                      color: 'white',
-                    }}
-                  />
-                </TouchableOpacity>
-                <Text style={{fontSize: 20, color: '#23046a'}}>{counter}</Text>
-                <TouchableOpacity onPress={plus}>
-                  <Icon
-                    name="plus"
-                    size={15}
-                    color="#900"
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50,
-                      backgroundColor: '#23046a',
-                      padding: 9,
-                      color: 'white',
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={{flex: 4}}>
-            <View
-              style={{
-                //   flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              }}>
-              <Image
-                style={{
-                  resizeMode: 'cover',
-                  height: 100,
-                  width: 100,
-                }}
-                source={{uri: PRODUCTS[0].uri}}
-              />
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'column',
-                  justifyContent: 'space-evenly',
-                  marginLeft: 10,
-                  fontWeight: 10,
-                }}>
-                <Text style={{color: '#23046a'}}>{PRODUCTS[0].title}</Text>
-                <Text style={{color: '#23046a'}}>{PRODUCTS[0].price}</Text>
-              </View>
-              <View
-                style={{
-                  flex: 2,
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  verticalAlign: 'center',
-                  marginTop: 30,
-                  // backgroundColor: 'red',
-                  // marginRight: 30,
-                }}>
-                <TouchableOpacity style={{borderRadius: 50}} onPress={minus}>
-                  <Icon
-                    name="minus"
-                    size={15}
-                    color="#900"
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50,
-                      backgroundColor: '#23046a',
-                      padding: 9,
-                      color: 'white',
-                    }}
-                  />
-                </TouchableOpacity>
-                <Text style={{fontSize: 20, color: '#23046a'}}>{counter}</Text>
-                <TouchableOpacity onPress={plus}>
-                  <Icon
-                    name="plus"
-                    size={15}
-                    color="#900"
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50,
-                      backgroundColor: '#23046a',
-                      padding: 9,
-                      color: 'white',
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
+            )}
+          />
         </ScrollView>
         <View style={{flex: 0.2, marginTop: 30}}>
           <View
@@ -392,7 +131,7 @@ export default function Cart() {
               justifyContent: 'space-around',
             }}>
             <Text style={{fontSize: 20, color: '#23046a'}}>Total</Text>
-            <Text style={{fontSize: 20, color: '#23046a'}}>Rs: 300</Text>
+            <Text style={{fontSize: 20, color: '#23046a'}}>Rs: {total()}</Text>
           </View>
           <TouchableOpacity style={{width: 300, marginLeft: 50}}>
             <Button title="Proceed To Checkout" color="#23046a" />

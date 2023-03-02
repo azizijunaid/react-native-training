@@ -3,8 +3,13 @@ import {View, Text, Image, Button, TouchableOpacity, Alert} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
+import {addToCart} from '../store/cartSlice';
+
 export default function ProductDetails({navigation, route}) {
   const [counter, setCounter] = useState(0);
+  const dispatch = useDispatch();
+
   const plus = () => {
     setCounter(counter + 1);
   };
@@ -18,6 +23,10 @@ export default function ProductDetails({navigation, route}) {
 
   const navigateToCart = () => {
     navigation.navigate('Cart');
+  };
+
+  const addItemsToCart = item => {
+    dispatch(addToCart({...item, qty: counter}));
   };
 
   const {productDetails} = route.params;
@@ -117,13 +126,17 @@ export default function ProductDetails({navigation, route}) {
                 justifyContent: 'space-between',
               }}>
               <TouchableOpacity style={{width: 130}}>
-                <Button title="Buy Now" color="#23046a" />
+                <Button
+                  title="Buy Now"
+                  color="#23046a"
+                  onPress={navigateToCart}
+                />
               </TouchableOpacity>
               <TouchableOpacity style={{width: 130}}>
                 <Button
                   title="Add to Cart"
                   color="orange"
-                  onPress={navigateToCart}
+                  onPress={() => addItemsToCart(productDetails)}
                 />
               </TouchableOpacity>
             </View>

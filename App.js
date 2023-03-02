@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, {useContext, useEffect, useState} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './src/components/Login';
@@ -8,14 +8,15 @@ import ProductList from './src/components/ProductList.js';
 import ProductDetails from './src/components/ProductDetails';
 import Cart from './src/components/Cart';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import AuthContextProvider, {AuthContext} from './src/store/auth-context';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {Alert, Button} from 'react-native';
-import auth from '@react-native-firebase/auth';
-
+import {Button} from 'react-native';
+import {Provider, useDispatch, useSelector} from 'react-redux';
+import {store} from './src/store/store';
+import {logOutFunc} from './src/store/slices';
+import {StyleSheet} from 'react-native';
 const Stack = createNativeStackNavigator();
 
-function UnAthenticatedStack() {
+const UnAthenticatedStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -27,69 +28,63 @@ function UnAthenticatedStack() {
       <Stack.Screen name="Signup" component={SignUp} />
     </Stack.Navigator>
   );
-}
+};
 
-export function AuthenticatedStack() {
-  const authCtx = useContext(AuthContext);
+const AuthenticatedStack = () => {
+  const dispatch = useDispatch();
+  const logOutFn = () => {
+    dispatch(logOutFunc());
+  };
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="ProductList"
         component={ProductList}
         options={{
-          headerRight: () => <Button onPress={authCtx.logout} title="Logout" />,
+          headerRight: () => <Button onPress={logOutFn} title="Logout" />,
         }}
       />
       <Stack.Screen
         name="ProductDetails"
         component={ProductDetails}
         options={{
-          headerRight: () => <Button onPress={authCtx.logout} title="Logout" />,
+          headerRight: () => <Button onPress={logOutFn} title="Logout" />,
         }}
       />
       <Stack.Screen
         name="Cart"
         component={Cart}
         options={{
-          headerRight: () => <Button onPress={authCtx.logout} title="Logout" />,
+          headerRight: () => <Button onPress={logOutFn} title="Logout" />,
         }}
       />
     </Stack.Navigator>
   );
-}
+};
 
-function Navigation() {
-  // const [loggedIn, setLoggedIn] = useState(null);
-  // useEffect(() => {
-  //   auth().onAuthStateChanged(user => {
-  //     console.log('user', user);
-  //     setLoggedIn(user);
-  //   });
-  // }, []);
-
-  const authCtx = useContext(AuthContext);
-
+const Navigation = () => {
+  const {isAuthenticated} = useSelector(state => state.user);
   return (
     <NavigationContainer>
-      {authCtx?.isAuthenticated ? (
-        <AuthenticatedStack />
-      ) : (
-        <UnAthenticatedStack />
-      )}
+      {isAuthenticated ? <AuthenticatedStack /> : <UnAthenticatedStack />}
     </NavigationContainer>
   );
-}
+};
+
 const App = () => {
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-      }}>
-      <AuthContextProvider>
+    <SafeAreaView style={styles.container}>
+      <Provider store={store}>
         <Navigation />
-      </AuthContextProvider>
+      </Provider>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default App;

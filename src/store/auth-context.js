@@ -1,4 +1,6 @@
+import React from 'react';
 const {createContext, useState} = require('react');
+import auth from '@react-native-firebase/auth';
 
 export const AuthContext = createContext({
   token: '',
@@ -16,7 +18,8 @@ function AuthContextProvider({children}) {
     authenticate: token => {
       setAuthToken(token);
     },
-    logout: () => {
+    logout: async () => {
+      await auth().signOut();
       setAuthToken(null);
     },
   };
