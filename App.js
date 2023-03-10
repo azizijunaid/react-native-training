@@ -15,6 +15,7 @@ import store from './src/store/store';
 import {logOutFunc} from './src/store/slices';
 import {StyleSheet} from 'react-native';
 import {PersistGate} from 'redux-persist/integration/react';
+import Checkout from './src/components/Checkout';
 const Stack = createNativeStackNavigator();
 const reduxStore = store();
 console.log('🚀 ~ file: App.js:20 ~ reduxStore:', reduxStore);
@@ -45,6 +46,8 @@ const AuthenticatedStack = () => {
         component={ProductList}
         options={{
           headerRight: () => <Button onPress={logOutFn} title="Logout" />,
+          headerTitleAlign: 'center',
+          headerShadowVisible: false,
         }}
       />
       <Stack.Screen
@@ -52,6 +55,8 @@ const AuthenticatedStack = () => {
         component={ProductDetails}
         options={{
           headerRight: () => <Button onPress={logOutFn} title="Logout" />,
+          headerTitleAlign: 'center',
+          headerShadowVisible: false,
         }}
       />
       <Stack.Screen
@@ -59,6 +64,17 @@ const AuthenticatedStack = () => {
         component={Cart}
         options={{
           headerRight: () => <Button onPress={logOutFn} title="Logout" />,
+          headerTitleAlign: 'center',
+          headerShadowVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name="Checkout"
+        component={Checkout}
+        options={{
+          headerRight: () => <Button onPress={logOutFn} title="Logout" />,
+          headerTitleAlign: 'center',
+          headerShadowVisible: false,
         }}
       />
     </Stack.Navigator>

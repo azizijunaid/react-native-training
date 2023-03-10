@@ -13,12 +13,16 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
 import {updateItemQuantity} from '../store/cartSlice';
 
-export default function Cart() {
+export default function Cart({navigation}) {
   const {cartItems} = useSelector(state => state.cart);
   const dispatch = useDispatch();
 
   const handleUpdateItemQuantity = (item, newQuantity) => {
     dispatch(updateItemQuantity({id: item.id, qty: newQuantity}));
+  };
+
+  const navigateToCheckout = total => {
+    navigation.navigate('Checkout', {total});
   };
 
   const total = () =>
@@ -133,7 +137,11 @@ export default function Cart() {
             <Text style={{fontSize: 20, color: '#23046a'}}>Rs: {total()}</Text>
           </View>
           <TouchableOpacity style={{width: 300, marginLeft: 50}}>
-            <Button title="Proceed To Checkout" color="#23046a" />
+            <Button
+              title="Proceed To Checkout"
+              color="#23046a"
+              onPress={() => navigateToCheckout(total())}
+            />
           </TouchableOpacity>
         </View>
       </View>
