@@ -1,25 +1,26 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, Button, TouchableOpacity, Alert} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {addToCart} from '../store/cartSlice';
 
 export default function ProductDetails({navigation, route}) {
   const [counter, setCounter] = useState(0);
+  const {cartItems} = useSelector(state => state.cart);
   const dispatch = useDispatch();
 
-  const plus = () => {
-    setCounter(counter + 1);
-  };
-  const minus = () => {
-    if (counter <= 0) {
-      return;
-    } else {
-      setCounter(counter - 1);
-    }
-  };
+  // const plus = () => {
+  //   setCounter(counter + 1);
+  // };
+  // const minus = () => {
+  //   if (counter <= 0) {
+  //     return;
+  //   } else {
+  //     setCounter(counter - 1);
+  //   }
+  // };
 
   const navigateToCart = () => {
     navigation.navigate('Cart');
@@ -30,6 +31,12 @@ export default function ProductDetails({navigation, route}) {
   };
 
   const {productDetails} = route.params;
+
+  // useEffect(() => {
+  //   const product = cartItems.find(item => item.id === productDetails.id);
+  //   setCounter(product?.qty || 0);
+  // }, []);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <LinearGradient
@@ -79,7 +86,7 @@ export default function ProductDetails({navigation, route}) {
           <View style={{flex: 1, padding: 20}}>
             <Text style={{color: '#23046a'}}>{productDetails.discription}</Text>
           </View>
-          <View
+          {/* <View
             style={{
               flex: 1,
               flexDirection: 'row',
@@ -118,7 +125,7 @@ export default function ProductDetails({navigation, route}) {
                 }}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <View style={{padding: 20}}>
             <View
               style={{

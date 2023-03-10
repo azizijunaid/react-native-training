@@ -21,9 +21,8 @@ export default function Cart() {
     dispatch(updateItemQuantity({id: item.id, qty: newQuantity}));
   };
 
-  const total = () => {
-    return cartItems.reduce((acc, item) => acc + item.qty, 0);
-  };
+  const total = () =>
+    cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
 
   const renderItems = ({item}) => {
     return (

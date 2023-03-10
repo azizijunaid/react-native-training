@@ -11,10 +11,13 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {Button} from 'react-native';
 import {Provider, useDispatch, useSelector} from 'react-redux';
-import {store} from './src/store/store';
+import store from './src/store/store';
 import {logOutFunc} from './src/store/slices';
 import {StyleSheet} from 'react-native';
+import {PersistGate} from 'redux-persist/integration/react';
 const Stack = createNativeStackNavigator();
+const reduxStore = store();
+console.log('🚀 ~ file: App.js:20 ~ reduxStore:', reduxStore);
 
 const UnAthenticatedStack = () => {
   return (
@@ -74,8 +77,10 @@ const Navigation = () => {
 const App = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <Provider store={store}>
-        <Navigation />
+      <Provider store={reduxStore.store}>
+        <PersistGate loading={null} persistor={reduxStore.persistor}>
+          <Navigation />
+        </PersistGate>
       </Provider>
     </SafeAreaView>
   );

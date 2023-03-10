@@ -69,7 +69,7 @@ const LoginScreen = () => {
             </Text>
           </TouchableOpacity>
 
-          <View style={styles.btnContainer}>
+          {/* <View style={styles.btnContainer}>
             <TouchableOpacity
               style={{
                 ...styles.signInBtn,
@@ -102,7 +102,7 @@ const LoginScreen = () => {
                 Facebook
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
 
           <TouchableOpacity style={{marginTop: '60%'}}>
             <Text
